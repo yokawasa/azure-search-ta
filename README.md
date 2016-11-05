@@ -43,7 +43,7 @@ For example, you can create the following test index in order to do text analysi
 ### azure-search-ta usage
 ```
 usage: azure-search-ta.py [-h] [-v] [-c CONF] [-i INDEX] [-a ANALYZER]
-                          [-t TEXTFILE] [-o OUTPUT]
+                          [-t TEXT] [-o OUTPUT]
 
 This program do text analysis and generate formatted output by using Azure
 Search Text Analyze API
@@ -56,15 +56,15 @@ optional arguments:
                         Azure Search index name
   -a ANALYZER, --analyzer ANALYZER
                         Azure Search analyzer name
-  -t TEXTFILE, --textfile TEXTFILE
-                        Text file to read and analyze
+  -t TEXT, --text TEXT  A file path or HTTP(s) URL from which the command line
+                        reads the text to analyze
   -o OUTPUT, --output OUTPUT
                         Output format ("simple" or "normal"). Default:normal
 ```
 
 
-### Example1: Output format normal
-Suppose you want to do text analysis for ja.microsoft analyzer in jaanalyzertest index
+### Example1: Analyzing text from a file and 'normal' output format 
+Suppose you want to read text from simple1.txt and make analysis for the text with ja.microsoft analyzer in jaanalyzertest index
 ```
 $ cat sample1.txt
 吾輩は猫である
@@ -75,8 +75,8 @@ TOKENS: [吾輩] [猫] [ある]
 ```
 
 
-### Example2: Output format normal
-Suppose you want to do text analysis for ja.microsoft analyzer in jaanalyzertest index
+### Example2: Analyzing text from a file and 'simple' output format 
+Suppose you want to read text from simple1.txt and make analysis for the text with ja.microsoft analyzer in jaanalyzertest index
 ```
 $ cat sample1.txt
 吾輩は猫である
@@ -85,8 +85,22 @@ $ azure-search-ta.py -c ./search.conf -i jaanalyzertest -a ja.microsoft --t samp
 '吾輩' '猫' 'ある'
 ```
 
+### Example3: Analyzing text from URL and 'simple' output format 
+Suppose you want to read text from URL(http://www.yahoo.co.jp) and make analysis for the text with ja.microsoft analyzer in jaanalyzertest index
+```
+$ azure-search-ta.py -i jaanalyzertest -a ja.microsoft --t http://www.yahoo.co.jp -o simple
+
+'yahoo!' 'japan' 'ヘルプ' 'yahoo!' 'japan' 'トップ' 'ページ' '機能' '正しく' 'ご' '利用' 'いただく' '下記' '環境' '必要' 'です' 'windows' 'internet' 'explorer' '9.0' 'nn9' '以上' 'chrome' '最新' '版' 'firefox' '最新' '版' 'microsoft' 'edge' 'macintosh' 'safari' '5.0' 'nn5' '以上' 'internet' 'explorer' '9.0' 'nn9' '以上' 'ご' '利用' '場合' 'internet' 'explorer' '互換' '表示' 'つい' 'て' '参考' '互換' '
+表示' '無効化' 'お' '試し' 'ください' '多数' '高級' '車' '1円' 'スタート' 'ヤフオク' '出品' '本日' 'まで' 'ホテル' 'や' '旅館' 'お得' 'な' 'タイム' 'セール' 'これ' 'から' '出会う' '重要' '人物' '名字' '無料' '占おう' 'ニュース' '12時' '2分' '更新' '馬毛島' '政府' '買収'
+ '最終' '調整' '朴' '氏' '最' '側近' 'も' '拘束' '証言' '注目' '病院' '食' '異臭' '塩素' '系' '成分' '検出' '乱暴' '疑惑' '慶大' '学生' '4人' '処分' '渋谷' '駅' '移設' 'へ' '銀座' '線' '一部' '運休' 'ソフト' 'めん' '給食' 'から' '消える' '清宮' 'ある' 'か' '早大' '経由' 'メジャー' 'メジア' 'アマゾン' 'cm' 'パパ' '好演' '反響' 'もっと' '見る' '記事' '一覧' '黒田' 'ありがとう' '11月' '5日' '10時' '59分' '配信' '毎日' '新聞' 'ショッピング' 'ヤフオク' '旅行' 'ホテル' '予約' 'ニュース' '天気' 'スポーツ' 'ナビ' 'ファイナンス' 'テレビ' 'gyao' 'y' 'モバゲー' 'モバゲ' '地域' '地図' '路線' '食べ' 'ログ' '求人' 'アルバイト' '不動産' '自動車' '掲示' '板' 'ブログ' 'ビューティー' 'ビューチ' '出会い' '電子' '書籍' '映画' 'ゲーム' '占い' 'サービス' '一覧' 'ログイン' 'id' 'もっと' '便利' '新規' '取得' 'メール' 'メール' 'アドレス' '取得' 'カレンダー' 'カレンダ' 'カレンダー' 'カレンダ' '活用' 'ポイント' '確認' 'ログイン' '履歴' '確認' '会社' '概要' '
+投資' '家' '情報' '社会的' '責任' '企業' '行動' '憲章' '広告' '掲載' 'つい' 'て' '採用' '情報' '利用' '規約' '免責' '事項' 'メディア' 'メデーア' 'ステートメント' 'ステトメント' 'セキュリティー' 'セキュリチ' '考え方' 'プライバシー' 'プライバシ' 'ポリシー' 'ポリシ' 'copyr
+ight' 'c' '2016' 'nn2016' 'yahoo' 'japan' 'corporation' 'all' 'rights' 'reserved'
+
+```
+
+## Todo
+
+* Support HTML output format option
 
 
-
-
-
+### Example2: Output format normal

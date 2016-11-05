@@ -5,8 +5,11 @@ import os
 import sys
 import argparse
 import httplib
+import urllib
 import simplejson as json
 from StringIO import StringIO
+from urlparse import urlparse
+from BeautifulSoup import BeautifulSoup, NavigableString, Declaration, Comment
 
 ### Global Defines
 _AZURE_SEARCH_TEXT_ANALYZE_VERSION = '0.1.0'
@@ -32,6 +35,12 @@ def format_join(l,f):
         n += 1
     return o.getvalue()
 
+def is_URL(s):
+    o = urlparse(s)
+    if len(o.scheme) > 0:
+        return True
+    return False
+
 def read_config(s):
     config = {}
     f = open(s)
@@ -48,6 +57,31 @@ def read_config(s):
         config[arrs[0]] = arrs[1]
     f.close
     return config
+
+class WebScraper:
+    def __init__(self, url):
+        res = urllib.urlopen(url)
+        self.__content = res.read()
+
+    def __get_navigable_strings(self,soup):
+        if isinstance(soup, NavigableString):
+            if type(soup) not in (Comment, Declaration) and soup.strip():
+                yield soup
+        elif soup.name not in ('script', 'style'):
+            for c in soup.contents:
+                for g in self.__get_navigable_strings(c):
+                    yield g
+    
+    def __get_Html_tag_stripped_text(self,s):
+        soup = BeautifulSoup(s, convertEntities="html")
+        return ' '.join(self.__get_navigable_strings(soup))
+
+    def get_content(self):
+        return self.__content.encode('utf8')
+
+    def get_html_stripped_content(self):
+        return self.__get_Html_tag_stripped_text(self.__content).encode('utf8')
+
 
 class AzureSearchClient:
     def __init__(self, api_url, api_key):
@@ -79,6 +113,7 @@ class AzureSearchClient:
         conn.close()
         return data 
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='This program do text analysis and generate formatted output by using Azure Search Text Analyze API')
     parser.add_argument(
@@ -93,8 +128,8 @@ if __name__ == '__main__':
         '-a','--analyzer',
         help='Azure Search analyzer name')
     parser.add_argument(
-        '-t','--textfile',
-        help='Text file to read and analyze')
+        '-t','--text',
+        help='A file path or HTTP(s) URL from which the command line reads the text to analyze')
     parser.add_argument(
         '-o','--output', default='normal',
         help='Output format ("simple" or "normal"). Default:normal')
@@ -111,31 +146,40 @@ if __name__ == '__main__':
     if not args.analyzer: 
         print_err("Please specify analyzer name with --analyzer option!\n")
         print_quit(parser.parse_args(['-h']))
-    if not args.textfile: 
-        print_err("Please specify text file with --textfile option!\n")
+    if not args.text: 
+        print_err("Please specify text file with --text option!\n")
         print_quit(parser.parse_args(['-h']))
-    if not os.path.exists(args.textfile):
-        print_err("text file {} does not exist\n".format(args.textfile))
-        print_quit(parser.parse_args(['-h']))
+    if not is_URL(args.text) and not os.path.exists(args.text):
+        print_err("Please speicfiy either URL or text file path that really does exist for --text option value!: {}\n".format(args.text))
     if args.output !="simple" and args.output !="normal":
         print_err("Please specify either \"simple\" or \"normal\" for --output option value!\n")
-        print_quit(parser.parse_args(['-h']))
-    ### Read text file into String Buffer
-    f = open(args.textfile)
-    target_text = StringIO()
-    l = f.readline()
-    while l:
-        l = l.strip()
-        if len(l) > 1 and not l.isspace():
-            target_text.write(l)
-        l = f.readline()
-    f.close
 
+    ### Read text into String Buffer
+    ## Read from URL
+    target_text = StringIO()
+    if (is_URL(args.text)):
+        ## Read from URL
+        ws = WebScraper(args.text)
+        target_text = ws.get_html_stripped_content()
+    else: 
+        ## Read from file
+        f = open(args.text)
+        sio = StringIO()
+        l = f.readline()
+        while l:
+            l = l.strip()
+            if len(l) > 1 and not l.isspace():
+                sio.write(l)
+            l = f.readline()
+        f.close
+        target_text=sio.getvalue()
+  
+    ### do Azure Search operations
     c = read_config(args.conf)
     client=AzureSearchClient(
         "{0}.search.windows.net".format(c["SEARCH_SERVICE_NAME"]),
         c["SEARCH_API_KEY"])
-    resstr = client.textanalze(args.index, args.analyzer, target_text.getvalue())
+    resstr = client.textanalze(args.index, args.analyzer, target_text)
 
     tokens=[]
     resobj=json.loads(resstr)
@@ -149,7 +193,7 @@ if __name__ == '__main__':
         outs.write( format_join(tokens, "'{}'" ) ) 
     else:
         outs.write('INPUT: ')
-        outs.write(target_text.getvalue())
+        outs.write(target_text)
         outs.write('\n')
         outs.write('TOKENS: ')
         outs.write( format_join(tokens, "[{}]" ) ) 
