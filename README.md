@@ -1,11 +1,14 @@
 # azure-search-ta
 Azure Search Text Analyze command line tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Text Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
 
-## Installation
+## 1. Installation
+Install azure-search-ta python package using [pip](https://pip.pypa.io/en/stable/)
+```
+pip install azure-search-ta
+```
 
-
-## 1. Preparation
-### 1-1. Create Azure Search Account and configure search.conf
+## 2. Preparation
+### 2-1. Create Azure Search Account and configure search.conf
 
 To enjoy text analysis using this command, you must create an Azure Search service in the Azure Portal. Please follow the instrucftion below:
  * [Create a service](https://azure.microsoft.com/en-us/documentation/articles/search-create-service-portal/)
@@ -19,7 +22,7 @@ SEARCH_SERVICE_NAME=<Azure Search Service name>
 SEARCH_API_KEY=<Azure Search API Admin Key>
 ```
 
-### 1-2. Create Index Schema to Analyze Text
+### 2-2. Create Index Schema to Analyze Text
 
 You need an index name to construct Azure search Text Analyze API request internally in the tool. For creating an index, please follow the instruction below
 
@@ -69,7 +72,7 @@ In the meanwhile, in order for you to test with your **custom analyzer** in usin
 [NOTE] For **predefined analyzers**, please refer to [Language support (Azure Search Service REST API)](https://msdn.microsoft.com/en-us/library/azure/dn879793.aspx) and [this document](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx)'s [Analyzers' section](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx#AnalyzerTable). For **custom analyzers**, please refer to [Custom analyzers in Azure Search](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx).
 
 
-## 2. Executing command line
+## 3. Executing command
 ### azure-search-ta usage
 ```
 usage: azure-search-ta [-h] [-v] [-c CONF] [-i INDEX] [-a ANALYZER]
