@@ -140,8 +140,7 @@ $ azure-search-ta -i ta -a ja.lucene --t http://www.yahoo.co.jp -o simple
 Suppose you want to read text from URL(http://news.microsoft.com/ja-jp/) and get the 10 most popular keywords that are contained in the results of test analysis with ja.lucene analyzer
 
 ```
-azure-search-ta -i jaanalyzertest -a ja.lucene --t http://news.microsoft.com/ja-jp/ -o simple | \
-        tr " " "\n" | sort |uniq -c | sort -nr |head -10
+azure-search-ta -i ta -a ja.lucene --t http://news.microsoft.com/ja-jp/ -o simple | tr " " "\n" | sort |uniq -c | sort -nr |head -10
 
      97 'ストア'
      74 'デバイス'
