@@ -166,6 +166,7 @@ azure-search-ta -i jaanalyzertest -a ja.lucene --t http://news.microsoft.com/ja-
 ## Links
 
 * https://pypi.python.org/pypi/azure-search-ta/
+* [Azure Search Text Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer)
 * [Language support (Azure Search Service REST API)](https://msdn.microsoft.com/en-us/library/azure/dn879793.aspx) 
 * [Custom analyzers in Azure Search](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx)
 
