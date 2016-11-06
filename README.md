@@ -2,7 +2,7 @@
 Azure Search Text Analyze command line tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Text Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
 
 ## 1. Installation
-Install azure-search-ta python package using [pip](https://pip.pypa.io/en/stable/)
+Install [azure-search-ta](https://pypi.python.org/pypi/azure-search-ta) python package by uinsg [pip](https://pip.pypa.io/en/stable/). Pip is a package management system used to install and manage software packages, such as those found in the [Python Package Index](https://pypi.python.org/pypi).
 ```
 pip install azure-search-ta
 ```
@@ -13,7 +13,7 @@ pip install azure-search-ta
 To enjoy text analysis using this command, you must create an Azure Search service in the Azure Portal. Please follow the instrucftion below:
  * [Create a service](https://azure.microsoft.com/en-us/documentation/articles/search-create-service-portal/)
 
-Once your Azure search account is created, add your Azure Search service name and API Key to the following search.conf file. Regarding API Key, an admin key must be added instead of a query key as the Text Analyze API request requires an admin key.
+Once the Azure search account is created, add Azure Search service name and API Key to the following search.conf file. Regarding API Key, an admin key must be added instead of a query key as the Text Analyze API request requires an admin key.
 
 ```
 # Azure Search Service Name ( never put space before and after = )
@@ -29,7 +29,7 @@ You need an index name to construct Azure search Text Analyze API request intern
  * [Create an Azure Search index](https://azure.microsoft.com/en-us/documentation/articles/search-what-is-an-index/)
  * [Azure Search Service REST API:Version 2015-02-28-Preview](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#create-index)
 
-You can test with any Azure Search's **predefined analyzers** in using Test Analysis API regardless of your index definitions. Therefore the following index schema (index name:'ta') is enough for the testing with predefined analyzers:
+Regardless of your index definitions you can test with any Azure Search's **predefined analyzers**. Therefore the following index schema (index name:'ta') is enough for the testing with predefined analyzers:
 ```
 {
     "name": "ta",
@@ -40,7 +40,7 @@ You can test with any Azure Search's **predefined analyzers** in using Test Anal
 }
 ```
 
-In the meanwhile, in order for you to test with your **custom analyzer** in using Test Analysis API, you need to define the custom analyzer in your index definition. Here is a sample index schema (index name: 'tacustom') that has custom analyzer definition:
+In the meanwhile, in order for you to test with your **custom analyzer**, you need to define the custom analyzer in your index definition. Here is a sample index schema (index name: 'tacustom') that has custom analyzer definition:
 
 ```
 {
