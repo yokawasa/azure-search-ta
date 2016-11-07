@@ -1,5 +1,5 @@
 # azure-search-ta
-Azure Search Text Analyze command line tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Text Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
+Azure Search Text Analyze command line tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
 
 ## 1. Installation
 Install [azure-search-ta](https://pypi.python.org/pypi/azure-search-ta) python package by uinsg [pip](https://pip.pypa.io/en/stable/). Pip is a package management system used to install and manage software packages, such as those found in the [Python Package Index](https://pypi.python.org/pypi).
@@ -13,7 +13,7 @@ pip install azure-search-ta
 To enjoy text analysis using this command, you must create an Azure Search service in the Azure Portal. Please follow the instrucftion below:
  * [Create a service](https://azure.microsoft.com/en-us/documentation/articles/search-create-service-portal/)
 
-Once the Azure search account is created, add Azure Search service name and API Key to the following search.conf file. Regarding API Key, an admin key must be added instead of a query key as the Text Analyze API request requires an admin key.
+Once the Azure search account is created, add Azure Search service name and API Key to the following search.conf file. Regarding API Key, an admin key must be added instead of a query key as the Analyze API request requires an admin key.
 
 ```
 # Azure Search Service Name ( never put space before and after = )
@@ -24,7 +24,7 @@ SEARCH_API_KEY=<Azure Search API Admin Key>
 
 ### 2-2. Create Index Schema to Analyze Text
 
-You need an index name to construct Azure search Text Analyze API request internally in the tool. For creating an index, please follow the instruction below
+You need an index name to construct Azure Search Analyze API request internally in the tool. For creating an index, please follow the instruction below
 
  * [Create an Azure Search index](https://azure.microsoft.com/en-us/documentation/articles/search-what-is-an-index/)
  * [Azure Search Service REST API:Version 2015-02-28-Preview](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#create-index)
@@ -79,7 +79,7 @@ usage: azure-search-ta [-h] [-v] [-c CONF] [-i INDEX] [-a ANALYZER]
                           [-t TEXT] [-o OUTPUT]
 
 This program do text analysis and generate formatted output by using Azure
-Search Text Analyze API
+Search Analyze API
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -165,7 +165,7 @@ azure-search-ta -i ta -a ja.lucene --t http://news.microsoft.com/ja-jp/ -o simpl
 ## Links
 
 * https://pypi.python.org/pypi/azure-search-ta/
-* [Azure Search Text Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer)
+* [Azure Search Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer)
 * [Language support (Azure Search Service REST API)](https://msdn.microsoft.com/en-us/library/azure/dn879793.aspx) 
 * [Custom analyzers in Azure Search](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx)
 
