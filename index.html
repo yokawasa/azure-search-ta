@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>azure-search-ta by yokawasa</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>azure-search-ta</h1>
+          <h2>Azure Search Text Analyze command line tool</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/yokawasa/azure-search-ta/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/yokawasa/azure-search-ta/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/yokawasa/azure-search-ta" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="azure-search-ta" class="anchor" href="#azure-search-ta" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>azure-search-ta</h1>
+
+<p>Azure Search Text Analyze command line tool that shows how an analyzer breaks text into tokens utlizing Azure Search <a href="https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer">Analyze API</a>.</p>
+
+<h2>
+<a id="1-installation" class="anchor" href="#1-installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Installation</h2>
+
+<p>Install <a href="https://pypi.python.org/pypi/azure-search-ta">azure-search-ta</a> python package by uinsg <a href="https://pip.pypa.io/en/stable/">pip</a>. Pip is a package management system used to install and manage software packages, such as those found in the <a href="https://pypi.python.org/pypi">Python Package Index</a>.</p>
+
+<pre><code>pip install azure-search-ta
+</code></pre>
+
+<h2>
+<a id="2-preparation" class="anchor" href="#2-preparation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Preparation</h2>
+
+<h3>
+<a id="2-1-create-azure-search-account-and-configure-searchconf" class="anchor" href="#2-1-create-azure-search-account-and-configure-searchconf" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2-1. Create Azure Search Account and configure search.conf</h3>
+
+<p>To enjoy text analysis using this command, you must create an Azure Search service in the Azure Portal. Please follow the instrucftion below:</p>
+
+<ul>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/search-create-service-portal/">Create a service</a></li>
+</ul>
+
+<p>Once the Azure search account is created, add Azure Search service name and API Key to the following search.conf file. Regarding API Key, an admin key must be added instead of a query key as the Analyze API request requires an admin key.</p>
+
+<pre><code># Azure Search Service Name ( never put space before and after = )
+SEARCH_SERVICE_NAME=&lt;Azure Search Service name&gt;
+# Azure Search API Admin Key ( never put space before and after = )
+SEARCH_API_KEY=&lt;Azure Search API Admin Key&gt;
+</code></pre>
+
+<h3>
+<a id="2-2-create-index-schema-to-analyze-text" class="anchor" href="#2-2-create-index-schema-to-analyze-text" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2-2. Create Index Schema to Analyze Text</h3>
+
+<p>You need an index name to construct Azure Search Analyze API request internally in the tool. For creating an index, please follow the instruction below</p>
+
+<ul>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/search-what-is-an-index/">Create an Azure Search index</a></li>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#create-index">Azure Search Service REST API:Version 2015-02-28-Preview</a></li>
+</ul>
+
+<p>Regardless of your index definitions you can test with any Azure Search's <strong>predefined analyzers</strong>. Therefore the following index schema (index name:'ta') is enough for the testing with predefined analyzers:</p>
+
+<pre><code>{
+    "name": "ta",
+    "fields": [
+        { "name":"id", "type":"Edm.String", "key": true, "searchable": false },
+        { "name":"content", "type":"Edm.String" }
+     ]
+}
+</code></pre>
+
+<p>In the meanwhile, in order for you to test with your <strong>custom analyzer</strong>, you need to define the custom analyzer in your index definition. Here is a sample index schema (index name: 'tacustom') that has custom analyzer definition:</p>
+
+<pre><code>{
+    "name":"tacustom",
+    "fields":[
+        { "name":"id", "type":"Edm.String", "key":true, "searchable":false },
+        { "name":"content","type":"Edm.String", "analyzer":"my_ngram" }
+    ],
+    "analyzers":[
+        {
+        "name":"my_ngram",
+        "@odata.type":"#Microsoft.Azure.Search.CustomAnalyzer",
+        "charFilters": ["html_strip"],
+        "tokenizer":"my_tokenizer",
+        "tokenFilters":[ "cjk_width","lowercase" ]
+        }
+    ],
+    "tokenizers":[
+        {
+        "name":"my_tokenizer",
+        "@odata.type":"#Microsoft.Azure.Search.NGramTokenizer",
+        "minGram":2,
+        "maxGram":5
+        }
+    ]
+}
+</code></pre>
+
+<p>[NOTE] For <strong>predefined analyzers</strong>, please refer to <a href="https://msdn.microsoft.com/en-us/library/azure/dn879793.aspx">Language support (Azure Search Service REST API)</a> and <a href="https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx">this document</a>'s <a href="https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx#AnalyzerTable">Analyzers' section</a>. For <strong>custom analyzers</strong>, please refer to <a href="https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx">Custom analyzers in Azure Search</a>.</p>
+
+<h2>
+<a id="3-executing-command" class="anchor" href="#3-executing-command" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Executing command</h2>
+
+<h3>
+<a id="azure-search-ta-usage" class="anchor" href="#azure-search-ta-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>azure-search-ta usage</h3>
+
+<pre><code>usage: azure-search-ta [-h] [-v] [-c CONF] [-i INDEX] [-a ANALYZER]
+                          [-t TEXT] [-o OUTPUT]
+
+This program do text analysis and generate formatted output by using Azure
+Search Analyze API
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+  -c CONF, --conf CONF  Azure Search Configuration file. Default:search.conf
+  -i INDEX, --index INDEX
+                        Azure Search index name
+  -a ANALYZER, --analyzer ANALYZER
+                        Azure Search analyzer name
+  -t TEXT, --text TEXT  A file path or HTTP(s) URL from which the command line
+                        reads the text to analyze
+  -o OUTPUT, --output OUTPUT
+                        Output format ("simple" or "normal"). Default:normal
+</code></pre>
+
+<h3>
+<a id="example1-analyzing-text-from-a-file-with-jamicrosoft-analyzer-and-normal-output-format" class="anchor" href="#example1-analyzing-text-from-a-file-with-jamicrosoft-analyzer-and-normal-output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example1: Analyzing text from a file with ja.microsoft analyzer and 'normal' output format</h3>
+
+<p>Suppose you want to read text from simple1.txt and make analysis for the text with ja.microsoft analyzer</p>
+
+<pre><code>$ cat sample1.txt
+吾輩は猫である
+
+$ azure-search-ta -c ./search.conf -i ta -a ja.microsoft --t sample1.txt
+INPUT: 吾輩は猫である
+TOKENS: [吾輩] [猫] [ある]
+</code></pre>
+
+<h3>
+<a id="example2-analyzing-text-from-a-file-with-jamicrosoft-analyzer-and-simple-output-format" class="anchor" href="#example2-analyzing-text-from-a-file-with-jamicrosoft-analyzer-and-simple-output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example2: Analyzing text from a file with ja.microsoft analyzer and 'simple' output format</h3>
+
+<p>Suppose you want to read text from simple1.txt and make analysis for the text with ja.microsoft analyzer</p>
+
+<pre><code>$ cat sample1.txt
+吾輩は猫である
+
+$ azure-search-ta -c ./search.conf -i ta -a ja.microsoft --t sample1.txt -o simple
+'吾輩' '猫' 'ある'
+</code></pre>
+
+<h3>
+<a id="example3-analyzing-text-from-a-file-with-custome-analyzer-and-simple-output-format" class="anchor" href="#example3-analyzing-text-from-a-file-with-custome-analyzer-and-simple-output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example3: Analyzing text from a file with custome analyzer and 'simple' output format</h3>
+
+<p>Suppose you want to read text from simple1.txt and make analysis for the text with custom analyzer ('my_ngram') defined in tacustom index</p>
+
+<pre><code>$ cat sample1.txt
+吾輩は猫である
+
+$ azure-search-ta -c ./search.conf -i tacustom -a my_ngram --t sample1.txt -o simple
+'吾輩' '吾輩は' '吾輩は猫で' '吾輩は猫' '輩は猫であ' '輩は' '輩は猫' '輩は猫で' 'は猫であ' 'は猫で' 'は猫' 'は猫である' '猫であ' '猫で' '猫で ある' 'である' 'であ' 'ある'
+</code></pre>
+
+<h3>
+<a id="example4-analyzing-text-from-url-with-jalucene-analyzer-and-simple-output-format" class="anchor" href="#example4-analyzing-text-from-url-with-jalucene-analyzer-and-simple-output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example4: Analyzing text from URL with ja.lucene analyzer and 'simple' output format</h3>
+
+<p>Suppose you want to read text from URL(<a href="http://www.yahoo.co.jp">http://www.yahoo.co.jp</a>) and make analysis for the text with ja.lucene analyzer</p>
+
+<pre><code>$ azure-search-ta -i ta -a ja.lucene --t http://www.yahoo.co.jp -o simple
+
+'yahoo' 'japan' 'ヘルプ' 'yahoo' 'japan' 'トップページ' '機能' '正しく' 'ご' '利用' 'いただく' '下記' '環境' '必要' 'windows' 'internet' 'explorer' '9' '0' '以上' 'chrome' '最新' '版' 'firefox' '最新' '版' 'microsoft' 'edge' 'macintosh' 'safari' '5' '0' '以上' 'internet' 'explorer' '9' '0' '以上' 'ご' '利用' '場合' 'internet' 'explorer' '互換' '表示' '参考' '互換' '表示' '無効' '化' '試し' 'くださる' 'キャンペーン' '参加' '家電' 'ブランド' '品' 'ポイント' '11' '倍' 'ユニバーサル' 'スタジオ' 'ジャパン' 'ご' '招待' '電子' '書籍' '5' '冊' '購入' '555' 'ポイント' ' 進呈' 'ニュース' '6' '時' '34' '分' '更新' '韓国' '前' '首席' '秘書官' '逮捕' '男児' '不明' '父' '供述' '浮かぶ' '謎' '事故' '車外' '出る' 'はねる' '死亡' '麻薬' '取引' '疑惑' '市長' '射殺' '比' 'パナ' 'led' '電球' '5' '年' '保証' '過去' 'ジョコビッチ' '世界' '1' '位' '陥落' 'ガイア' '夜明け' '心' '刺さる' '訳' 'さんま' '初' '紅白' '出演' '濃厚' 'もっと' '見る' '記事' '一覧' '夜' 'ワラ' 'ゴジラ' '11' '月' '5' '日' '19' '時' '40' '分' '配信' '時事' '時事通信' '通信' 'ショッピング' 'ヤフオク' '旅行' 'ホテル' '予約' 'ニュース' '天気' 'スポーツナビ' 'ファイナンス' 'テレビ' 'gyao' 'y' 'モバゲ' '地域' '地図' '路線' '食べる' 'ログ' '求人' 'アルバイト' '不動産' '自動車' '掲示板' 'ブログ' 'ビューティ' '出会い' '電子' '書籍' '映画' 'ゲーム' '占い' 'サービス' '一覧' 'ログイン' 'id' 'もっと' '便利' '新規' '取得' 'メール' 'メールアドレス' '取得' 'カレンダ' 'カレンダ' '活用' 'ポイント' '確認' 'ログイン' '履歴' '確認' '会社' '概要' '投資' '家' '情報' '社会' '的' '責任' '企業' '行動' '憲章' '広 告' '掲載' '採用' '情報' '利用' '規約' '免責' '事項' 'メディア' 'ステートメント' 'セキュリティ' '考え方' 'プライバシ' 'ポリシ' 'copyright' 'c' '2016' 'yahoo' 'japan' 'corporation' 'all' 'rights' 'reserved'
+</code></pre>
+
+<p>Suppose you want to read text from URL(<a href="http://news.microsoft.com/ja-jp/">http://news.microsoft.com/ja-jp/</a>) and get the 10 most popular keywords that are contained in the results of test analysis with ja.lucene analyzer</p>
+
+<pre><code>azure-search-ta -i ta -a ja.lucene --t http://news.microsoft.com/ja-jp/ -o simple | tr " " "\n" | sort |uniq -c | sort -nr |head -10
+
+     97 'ストア'
+     74 'デバイス'
+     71 'マイクロソフト'
+     39 '日本'
+     32 '株式会社'
+     32 '株式'
+     32 '会社'
+     30 'ソフトウェア'
+     29 'microsoft'
+     27 '2016'
+</code></pre>
+
+<h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Todo</h2>
+
+<ul>
+<li>Support HTML output format option</li>
+</ul>
+
+<h2>
+<a id="change-log" class="anchor" href="#change-log" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Change log</h2>
+
+<ul>
+<li><a href="ChangeLog.md">Changelog</a></li>
+</ul>
+
+<h2>
+<a id="links" class="anchor" href="#links" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Links</h2>
+
+<ul>
+<li><a href="http://yokawasa.github.io/azure-search-ta/">http://yokawasa.github.io/azure-search-ta/</a></li>
+<li><a href="https://pypi.python.org/pypi/azure-search-ta/">https://pypi.python.org/pypi/azure-search-ta/</a></li>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer">Azure Search Analyze API</a></li>
+<li>
+<a href="https://msdn.microsoft.com/en-us/library/azure/dn879793.aspx">Language support (Azure Search Service REST API)</a> </li>
+<li><a href="https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx">Custom analyzers in Azure Search</a></li>
+</ul>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/yokawasa/azure-search-ta">https://github.com/yokawasa/azure-search-ta</a>.</p>
+
+<h2>
+<a id="copyright" class="anchor" href="#copyright" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Copyright</h2>
+
+<table>
+  <tr>
+    <td>Copyright</td>
+<td>Copyright (c) 2016- Yoichi Kawasaki</td>
+  </tr>
+  <tr>
+    <td>License</td>
+<td>MIT</td>
+  </tr>
+</table>
+        </section>
+
+        <footer>
+          azure-search-ta is maintained by <a href="https://github.com/yokawasa">yokawasa</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
