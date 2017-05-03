@@ -1,7 +1,7 @@
 # azure-search-ta
-Azure Search Text Analyze API client tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
+Azure Search Test Analyzer API client tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
 
-#  Web UI for Text Analyze API
+#  Web UI for Test Analyzer API
 Web UI Tool that allows you to see how an analyzer breaks text into tokens via Web UI.
 ![](https://github.com/yokawasa/azure-search-ta/raw/master/img/azure-search-ta-ui.gif)
 

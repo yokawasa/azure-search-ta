@@ -1,5 +1,4 @@
 var inSearch = false;
-var detailMode= false;
 
 function execSearch()
 {
@@ -32,6 +31,5 @@ function execSearch()
 			inSearch= false;
         }
     });
-
 }
 
