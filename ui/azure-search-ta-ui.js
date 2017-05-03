@@ -2,11 +2,11 @@ var inSearch = false;
 
 function execSearch()
 {
-	var text = $("#ta_text").val();
+    var text = $("#ta_text").val();
     var analyzer = $("#ta_analyzer").val();
     var index = $("#ta_index").val();
-	var searchAPI1 = "/analyze-api.php";
-	inSearch= true;
+    var searchAPI1 = "/analyze-api.php";
+    inSearch= true;
 
     var postdata = {
        "text": text,
@@ -22,13 +22,13 @@ function execSearch()
         type: "POST",
         success: function (data) {
 
-			$( "#apidata-container" ).html('');
-    		$( "#apidata-container" ).append('<h2>Output Tokens</h2>');
-			for (var item in data.tokens)
-			{
+            $( "#apidata-container" ).html('');
+            $( "#apidata-container" ).append('<h2>Output Tokens</h2>');
+            for (var item in data.tokens)
+            {
                 $( "#apidata-container" ).append( ' <kbd class=lead>' + data.tokens[item].token + '</kbd> ');
             }
-			inSearch= false;
+            inSearch= false;
         }
     });
 }
