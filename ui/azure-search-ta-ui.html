@@ -1,0 +1,59 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>Azure Search Text Analyze UI</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="design.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Azure Search Text Analyze UI</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+    <h2>Input Params</h2>
+    <form class="form-horizontal" action="#">
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="ta_text">Text:</label>
+            <div class="col-sm-9">          
+                <textarea class="form-control" rows="5" id="ta_text" placeholder="Enter text to test analyze"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="ta_analyzer">Analyzer:</label>
+            <div class="col-sm-3">          
+                <input type="text" class="form-control" id="ta_analyzer" placeholder="Enter analyzer name" name="ta_analyzer">
+            </div>
+        </div>
+        <div class="form-group">        
+            <div class="col-sm-offset-1 col-sm-10">
+                <button class="btn btn" type="button" onclick="execSearch();">Analyze!</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="colmask singlepage">
+        <!-- Result Container end -->
+        <div id="apidata-container"></div>
+    </div><!-- /colmask -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="azure-search-ta-ui.js"></script>
+  </body>
+</html>
