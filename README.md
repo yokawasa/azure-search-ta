@@ -1,9 +1,17 @@
 # azure-search-ta
-Azure Search Text Analyze tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
+Azure Search Text Analyze API client tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
 
 #  Web UI for Text Analyze API
-Web UI Tool that allows you to test Azure Search Text Analyze feature via Web UI.
-![](https://github.com/yokawasa/azure-search-ta/raw/master/img/azure-search-ta-ui.png)
+Web UI Tool that allows you to see how an analyzer breaks text into tokens via Web UI.
+![](https://github.com/yokawasa/azure-search-ta/raw/master/img/azure-search-ta-ui.gif)
+
+Installation is very simple - (1) just copying files under [azure-search-ta/ui](https://github.com/yokawasa/azure-search-ta/tree/master/ui) onto your web server, (2) Open analyze-api.php with your editor and configure your Azure Search serivce name and Azure Search API Admin key, that's it! Make sure if all related files are accessible from the web server, and also if .php file is executable in the web server.
+
+```
+vi analyze-api.php
+$azureSearchAccount="<Azure Search Service name>";
+$azureSearchApiKey = "<Azure Search API Admin Key>"
+```
 
 # Command-Line Tool
 

@@ -2,8 +2,6 @@
 
 $azureSearchAccount="<Azure Search Service name>";
 $azureSearchApiKey = "<Azure Search API Admin Key>";
-$azureSearchIndex= "<Azure Search index name>";
-$AZURESEARCH_URL_BASE= 'https://'.$azureSearchAccount.'.search.windows.net/indexes/'.$azureSearchIndex.'/analyze?api-version=2015-02-28-Preview';
 
 $req=$_REQUEST;
 $params = array();
@@ -12,10 +10,15 @@ if( is_array($req) ) {
         $params[$name] = $value;
     }
 }
-if ( !array_key_exists('text', $params) || !array_key_exists('analyzer', $params) ) {
+if ( !array_key_exists('text', $params) 
+      || !array_key_exists('analyzer', $params) 
+      || !array_key_exists('index', $params) ) {
     print "Error!";
     exit;
 }
+
+$AZURESEARCH_URL_BASE= 'https://'.$azureSearchAccount.'.search.windows.net/indexes/'.$params['index'].'/analyze?api-version=2015-02-28-Preview';
+
 $body_arr = array(
     "text" => $params['text'],
     "analyzer" => $params['analyzer']

@@ -5,12 +5,14 @@ function execSearch()
 {
 	var text = $("#ta_text").val();
     var analyzer = $("#ta_analyzer").val();
+    var index = $("#ta_index").val();
 	var searchAPI1 = "/analyze-api.php";
 	inSearch= true;
 
     var postdata = {
        "text": text,
-       "analyzer": analyzer
+       "analyzer": analyzer,
+       "index": index
     };
     $.ajax({
         url: searchAPI1,
