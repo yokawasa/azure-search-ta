@@ -1,8 +1,17 @@
+#!/usr/bin/env python
 import re
+import ast
+
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
-    from distutils.core import setup
+    from distutils.core import setup, find_packages
+
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('README.md').read()
 
 with open('lib/azuresearchta.py', 'r') as fd:
     version = re.search(
@@ -11,10 +20,12 @@ with open('lib/azuresearchta.py', 'r') as fd:
 
 setup(name='azure-search-ta',
     version=version,
-    description='Azure Search Text Analyze command line tool',
+    description='Azure Search Test Analyzer API Client Tool',
+    long_description=long_description,
     author='Yoichi Kawasaki',
     author_email='yoichi.kawasaki@outlook.com',
     url='https://github.com/yokawasa/azure-search-ta',
+    download_url='https://pypi.python.org/pypi/azure-seatch-ta',
     platforms='any',
     license='MIT',
     package_dir = {'': 'lib'},
