@@ -1,5 +1,11 @@
 # azure-search-ta
-Azure Search Text Analyze command line tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
+Azure Search Text Analyze tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
+
+# Azure Search Text Analyze Web UI 
+
+![](https://github.com/yokawasa/azure-search-ta/raw/master/img/azure-search-ta-ui.png)
+
+# Command-Line Tool
 
 ## 1. Installation
 Install [azure-search-ta](https://pypi.python.org/pypi/azure-search-ta) python package by uinsg [pip](https://pip.pypa.io/en/stable/). Pip is a package management system used to install and manage software packages, such as those found in the [Python Package Index](https://pypi.python.org/pypi).
