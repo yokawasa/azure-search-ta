@@ -1,3 +1,7 @@
+## 0.2.2
+* Fixup issue #1 - pip installation error
+* Added register.py as an installation helper script
+
 ## 0.2.1
 * Add Web UI
 

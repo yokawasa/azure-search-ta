@@ -20,7 +20,7 @@ import simplejson as json
 from bs4 import BeautifulSoup, NavigableString, Declaration, Comment
 
 ### Global Defines
-_AZURE_SEARCH_TEXT_ANALYZE_VERSION = '0.2.1'
+_AZURE_SEARCH_TEXT_ANALYZE_VERSION = '0.2.2'
 _AZURE_SEARCH_API_VERSION = '2015-02-28-Preview'
 _AZURE_SEARCH_CONFIG_FILE = 'search.conf'
 
