@@ -21,6 +21,11 @@ Install [azure-search-ta](https://pypi.python.org/pypi/azure-search-ta) python p
 pip install azure-search-ta
 ```
 
+If you want to install the package in your home directory, NOT in system directry, add --user option like this:
+```
+pip install azure-search-ta --user
+```
+
 ## 2. Preparation
 ### 2-1. Create Azure Search Account and configure search.conf
 
