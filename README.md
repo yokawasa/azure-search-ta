@@ -1,7 +1,7 @@
 # azure-search-ta
-Azure Search Test Analyzer API client tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer).
+Azure Search Analyze Text API client tool that shows how an analyzer breaks text into tokens utlizing Azure Search [Analyze Text API](https://docs.microsoft.com/en-us/rest/api/searchservice/test-analyzer).
 
-#  Web UI for Test Analyzer API
+#  Web UI for Analyze Text API
 Web UI Tool that allows you to see how an analyzer breaks text into tokens via Web UI.
 ![](https://github.com/yokawasa/azure-search-ta/raw/master/img/azure-search-ta-ui.gif)
 
@@ -46,7 +46,7 @@ SEARCH_API_KEY=<Azure Search API Admin Key>
 You need an index name to construct Azure Search Analyze API request internally in the tool. For creating an index, please follow the instruction below
 
  * [Create an Azure Search index](https://azure.microsoft.com/en-us/documentation/articles/search-what-is-an-index/)
- * [Azure Search Service REST API:Version 2015-02-28-Preview](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#create-index)
+ * [Azure Search Service REST API: Create Index](https://docs.microsoft.com/en-us/rest/api/searchservice/create-index)
 
 Regardless of your index definitions you can test with any Azure Search's **predefined analyzers**. Therefore the following index schema (index name:'ta') is enough for the testing with predefined analyzers:
 ```
@@ -88,7 +88,7 @@ In the meanwhile, in order for you to test with your **custom analyzer**, you ne
 }
 ```
 
-[NOTE] For **predefined analyzers**, please refer to [Language support (Azure Search Service REST API)](https://msdn.microsoft.com/en-us/library/azure/dn879793.aspx) and [this document](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx)'s [Analyzers' section](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx#AnalyzerTable). For **custom analyzers**, please refer to [Custom analyzers in Azure Search](https://msdn.microsoft.com/en-us/library/azure/mt605304.aspx).
+[NOTE] For **predefined analyzers**, please refer to [Language support (Azure Search Service REST API)](https://docs.microsoft.com/en-us/rest/api/searchservice/Language-support) and [Predefined Analyzers section](https://docs.microsoft.com/en-us/rest/api/searchservice/Custom-analyzers-in-Azure-Search#predefined-analyzers-reference). For **custom analyzers**, please refer to [Custom analyzers in Azure Search](https://docs.microsoft.com/en-us/rest/api/searchservice/custom-analyzers-in-azure-search).
 
 
 ## 3. Executing command
@@ -184,7 +184,7 @@ azure-search-ta -i ta -a ja.lucene --t http://news.microsoft.com/ja-jp/ -o simpl
 ## Links
 
 * https://pypi.python.org/pypi/azure-search-ta/
-* [Azure Search Analyze API](https://azure.microsoft.com/en-us/documentation/articles/search-api-2015-02-28-preview/#test-analyzer)
+* [Azure Search Analyze Text API](https://docs.microsoft.com/en-us/rest/api/searchservice/test-analyzer)
 * [Language support (Azure Search Service REST API)](https://docs.microsoft.com/en-us/rest/api/searchservice/Language-support) 
 * [Custom analyzers in Azure Search](https://docs.microsoft.com/en-us/rest/api/searchservice/custom-analyzers-in-azure-search)
 * [Blog article on azure-search-ta (Japanese)](http://unofficialism.info/posts/azure-search-analyzer-test-with-azure-search-ta/)

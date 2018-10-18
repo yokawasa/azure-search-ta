@@ -20,8 +20,8 @@ import simplejson as json
 from bs4 import BeautifulSoup, NavigableString, Declaration, Comment
 
 ### Global Defines
-_AZURE_SEARCH_TEXT_ANALYZE_VERSION = '0.2.2'
-_AZURE_SEARCH_API_VERSION = '2015-02-28-Preview'
+_AZURE_SEARCH_TEXT_ANALYZE_VERSION = '0.3.0'
+_AZURE_SEARCH_API_VERSION = '2017-11-11'
 _AZURE_SEARCH_CONFIG_FILE = 'search.conf'
 
 def print_out(s):
@@ -195,6 +195,12 @@ def main():
 
     tokens=[]
     resobj=json.loads(resstr)
+    if "error" in resobj:
+        errobj=resobj['error']
+        if "message" in errobj:
+            print_quit(u"[ERROR] {}\n".format(errobj['message']))
+        else:
+            print_quit(u"[ERROR] Unknown error occured\n")
     tokenobjs = resobj['tokens']
     for tokenobj in tokenobjs:
         tokens.append(tokenobj['token'])
